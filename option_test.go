@@ -8,19 +8,27 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestPipelining(t *testing.T) {
+func TestMap(t *testing.T) {
+	optNumber := None[int]()
+	twiceOpt := Map(optNumber, doubleValue)
+	require.False(t, twiceOpt.isDefined)
+
+	optNumber = Some(5)
+	twiceOpt = Map(optNumber, doubleValue)
+	require.True(t, twiceOpt.isDefined)
+	require.Equal(t, 10, twiceOpt.value)
+}
+
+func doubleValue(n int) int {
+	return n * 2
+}
+
+func TestFlatMap(t *testing.T) {
 	s := "5"
-
-	// Chain operations using FlatMap functions.
-	// Since we cannot have methods with type parameters, we use functions.
-	result := FlatMap(parseInt(s), func(n int) Option[string] {
-		return FlatMap(reciprocal(n), func(r float64) Option[string] {
-			return someOtherOperation(r)
-		})
-	})
-
+	result := FlatMap(FlatMap(parseInt(s), reciprocal), someOtherOperation)
 	require.True(t, result.isDefined)
 	require.NotNil(t, result.Get())
+	require.Equal(t, "Result: 0.20", result.Get())
 }
 
 func parseInt(s string) Option[int] {
