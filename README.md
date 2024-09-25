@@ -1,5 +1,7 @@
 # composer
 
+This is an exercise project that hacks function ideas in to golang, as can be seen, it is not a very ergonomic or useful implmenetation. 
+
 #### Option Monad in Go
 A simple implementation of the Option monad in Go, inspired by Scala's Option[T]. This library provides a way to handle computations that may fail without resorting to heavy error handling, using Go's generics introduced in Go 1.18.
 
